@@ -1,0 +1,12 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/api/catalog"
+  to = "/data/catalog.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/army/:id"
+  to = "/data/armies/:id.json"
+  status = 200

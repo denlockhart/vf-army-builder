@@ -1,12 +1,111 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hello World</title>
-  </head>
-  <body>
-    <h1>Hello, world!</h1>
-    <p>This is a minimal index.html created by the assistant.</p>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valour &amp; Fortitude - Army Builder</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>Valour &amp; Fortitude</h1>
+    <p>Army Builder <span class="tag">Perry Miniatures v3.1</span></p>
+  </header>
+  <main>
+    <div id="error-box" class="hidden"></div>
+    <section id="screen-setup" class="panel">
+      <h2>New Army</h2>
+      <div class="form-grid">
+        <label>Era<select id="era-select"></select></label>
+        <label>Army sheet<select id="army-select"></select></label>
+        <label>Army name<input id="army-name" type="text" placeholder="Enter army name"></label>
+        <label>Points limit<input id="points-limit" type="number" min="100" step="50" value="800"></label>
+        <label>Army leader<input id="army-leader" type="text" placeholder="Enter army leader"></label>
+      </div>
+      <p class="hint" id="sheet-info"></p>
+      <div class="actions">
+        <button type="button" class="primary" id="btn-start">Start Building</button>
+      </div>
+    </section>
+    <section id="screen-builder" class="hidden">
+      <div class="summary-bar">
+        <div class="army-name-row">
+          <strong id="summary-army-name">(unnamed)</strong>
+          <span id="summary-sheet" class="meta"></span>
+          <span id="summary-army-leader" class="meta">Leader: (unnamed)</span>
+        </div>
+        <div>Points: <span id="points-used">0</span> / <span id="points-max">800</span></div>
+        <div>Units: <span id="unit-count">0</span></div>
+      </div>
+      <div class="layout">
+        <div class="col">
+          <div class="panel">
+            <h2>Unit Catalog</h2>
+            <div class="filter-row">
+              <button type="button" class="filter active" data-type="all">All</button>
+              <button type="button" class="filter" data-type="infantry">Infantry</button>
+              <button type="button" class="filter" data-type="cavalry">Cavalry</button>
+              <button type="button" class="filter" data-type="artillery">Artillery</button>
+            </div>
+            <div id="catalog-list" class="catalog-list"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <h2>Your Army</h2>
+            <div id="army-summary" class="army-summary">
+              <div id="army-points-total" class="points-total">0 / 800 points</div>
+            </div>
+          </div>
+          <div class="panel">
+            <h2>Brigades</h2>
+            <p class="hint">Each brigade needs 1 leader and 2-8 units (V&amp;F rule 1.4).</p>
+<div id="brigade-list"></div>
+            <button type="button" id="btn-add-brigade">+ Add Brigade</button>
+          </div>
+          <div class="panel actions-panel">
+            <div class="actions">
+              <button type="button" class="primary" id="btn-export-pdf">Preview PDF</button>
+              <button type="button" class="danger" id="btn-clear">Clear</button>
+              <button type="button" id="btn-back">Change Army</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <dialog id="add-dialog">
+    <form method="dialog" id="add-form">
+      <h3 id="add-title">Add Unit</h3>
+      <p id="add-profile" class="profile-line"></p>
+      <label>Figures<input id="add-figures" type="number" min="1" required></label>
+      <label>Custom name (optional)<input id="add-custom-name" type="text"></label>
+      <fieldset>
+        <legend>Unit options</legend>
+        <label><input type="checkbox" id="opt-understrength"> Understrength (-5 pts, halve figures)</label>
+        <label><input type="checkbox" id="opt-elite-fire"> <span id="label-elite-fire">Elite +1 Fire (+2 pts)</span></label>
+        <label><input type="checkbox" id="opt-elite-melee"> <span id="label-elite-melee">Elite +1 Melee (+2 pts)</span></label>
+        <label><input type="checkbox" id="opt-elite-tenacity"> <span id="label-elite-tenacity">Elite +1 Tenacity (+3 pts)</span></label>
+      </fieldset>
+      <p class="cost-line">Cost: <strong id="add-cost">0</strong> pts</p>
+      <div class="actions">
+        <button type="submit" class="primary">Add to Army</button>
+        <button type="button" id="add-cancel">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+  <dialog id="pdf-preview-dialog" class="pdf-preview-dialog">
+    <h3>PDF Preview</h3>
+    <iframe id="pdf-preview-frame" title="Army list PDF preview"></iframe>
+    <div class="actions">
+      <button type="button" class="primary" id="btn-pdf-save">Save PDF</button>
+      <button type="button" id="btn-pdf-close">Close</button>
+    </div>
+  </dialog>
+  <footer>
+    Based on <a href="https://www.perry-miniatures.com/valour-fortitude/vf-army-sheets/" target="_blank">official V&amp;F army sheets</a>
+  </footer>
+  <script src="/jspdf.umd.min.js"></script>
+  <script src="/app.js"></script>
+</body>
 </html>

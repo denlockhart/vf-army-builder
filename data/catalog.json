@@ -1,0 +1,23 @@
+{
+  "game": "Valour & Fortitude",
+  "rulesSource": "https://www.perry-miniatures.com/valour-fortitude/",
+  "armySheetsSource": "https://www.perry-miniatures.com/valour-fortitude/vf-army-sheets/",
+  "eras": [
+    {
+      "id": "napoleonic",
+      "name": "Napoleonic",
+      "armies": [
+        {
+          "id": "napoleonic-british",
+          "name": "British",
+          "file": "napoleonic-british.json"
+        },
+        {
+          "id": "napoleonic-french",
+          "name": "French",
+          "file": "napoleonic-french.json"
+        }
+      ]
+    }
+  ]
+}

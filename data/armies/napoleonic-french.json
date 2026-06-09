@@ -1,0 +1,325 @@
+{
+  "id": "napoleonic-french",
+  "name": "French",
+  "era": "Napoleonic",
+  "period": "1805-1815",
+  "sheetVersion": "v3.1",
+  "sourceUrl": "https://www.perry-miniatures.com/valour-fortitude/vf-army-sheets/",
+  "defaultPointsLimit": 800,
+  "units": [
+    {
+      "id": "old-guard",
+      "name": "Old Guard",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 3,
+      "melee": 6,
+      "tenacity": 6,
+      "specialRules": [
+        "Elan",
+        "Skirmishers",
+        "Square"
+      ],
+      "points": 33
+    },
+    {
+      "id": "middle-guard",
+      "name": "Middle Guard",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 3,
+      "melee": 5,
+      "tenacity": 6,
+      "specialRules": [
+        "Elan",
+        "Skirmishers",
+        "Square"
+      ],
+      "points": 31
+    },
+    {
+      "id": "young-guard",
+      "name": "Young Guard",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 3,
+      "melee": 5,
+      "tenacity": 5,
+      "specialRules": [
+        "Elan",
+        "Skirmishers",
+        "Square"
+      ],
+      "points": 28
+    },
+    {
+      "id": "guard-marines",
+      "name": "Guard Marines",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 4,
+      "melee": 4,
+      "tenacity": 4,
+      "specialRules": [
+        "Elan",
+        "Light Infantry",
+        "Square"
+      ],
+      "points": 27
+    },
+    {
+      "id": "grenadiers",
+      "name": "Grenadiers",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 3,
+      "melee": 5,
+      "tenacity": 4,
+      "specialRules": [
+        "Elan",
+        "Skirmishers",
+        "Square"
+      ],
+      "points": 25
+    },
+    {
+      "id": "line-infantry",
+      "name": "Line Infantry",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 3,
+      "melee": 4,
+      "tenacity": 4,
+      "specialRules": [
+        "Elan",
+        "Skirmishers",
+        "Square"
+      ],
+      "points": 23
+    },
+    {
+      "id": "light-infantry",
+      "name": "Light Infantry",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 4,
+      "melee": 3,
+      "tenacity": 4,
+      "specialRules": [
+        "Elan",
+        "Light Infantry",
+        "Square"
+      ],
+      "points": 25
+    },
+    {
+      "id": "marie-louise",
+      "name": "Marie Louise",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 2,
+      "melee": 3,
+      "tenacity": 3,
+      "specialRules": [
+        "Skirmishers",
+        "Square"
+      ],
+      "points": 15
+    },
+    {
+      "id": "national-guard",
+      "name": "National Guard",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 2,
+      "melee": 3,
+      "tenacity": 2,
+      "specialRules": [
+        "Militia",
+        "Square"
+      ],
+      "points": 10
+    },
+    {
+      "id": "infantry-det",
+      "name": "Infantry Detachment",
+      "type": "infantry",
+      "figuresMin": 6,
+      "figuresMax": 8,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 2,
+      "melee": 2,
+      "tenacity": 2,
+      "specialRules": [
+        "Light Infantry"
+      ],
+      "points": 11
+    },
+    {
+      "id": "hussars-chasseurs",
+      "name": "Hussars and Chasseurs",
+      "type": "cavalry",
+      "figuresMin": 9,
+      "figuresMax": 14,
+      "weapon": "Sabre",
+      "rangeInches": null,
+      "fire": null,
+      "melee": 4,
+      "tenacity": 3,
+      "specialRules": [
+        "Carbines",
+        "Light Cavalry"
+      ],
+      "points": 22
+    },
+    {
+      "id": "lanciers",
+      "name": "Lanciers",
+      "type": "cavalry",
+      "figuresMin": 9,
+      "figuresMax": 14,
+      "weapon": "Lance",
+      "rangeInches": null,
+      "fire": null,
+      "melee": 4,
+      "tenacity": 3,
+      "specialRules": [
+        "Carbines",
+        "Light Cavalry"
+      ],
+      "points": 22
+    },
+    {
+      "id": "dragoons",
+      "name": "Dragoons",
+      "type": "cavalry",
+      "figuresMin": 9,
+      "figuresMax": 14,
+      "weapon": "Sabre",
+      "rangeInches": null,
+      "fire": null,
+      "melee": 5,
+      "tenacity": 3,
+      "specialRules": [
+        "Heavy Cavalry"
+      ],
+      "points": 22
+    },
+    {
+      "id": "cuirassiers",
+      "name": "Cuirassiers and Carabineers",
+      "type": "cavalry",
+      "figuresMin": 9,
+      "figuresMax": 14,
+      "weapon": "Sabre",
+      "rangeInches": null,
+      "fire": null,
+      "melee": 6,
+      "tenacity": 4,
+      "specialRules": [
+        "Heavy Cavalry"
+      ],
+      "points": 27
+    },
+    {
+      "id": "cavalry-det",
+      "name": "Cavalry Detachment",
+      "type": "cavalry",
+      "figuresMin": 3,
+      "figuresMax": 3,
+      "weapon": "Sabre",
+      "rangeInches": null,
+      "fire": null,
+      "melee": 2,
+      "tenacity": 1,
+      "specialRules": [
+        "Carbines",
+        "Light Cavalry"
+      ],
+      "points": 12
+    },
+    {
+      "id": "field-artillery",
+      "name": "Field Artillery",
+      "type": "artillery",
+      "figuresMin": 1,
+      "figuresMax": 1,
+      "weapon": "Cannon",
+      "rangeInches": 48,
+      "fire": 1,
+      "melee": 2,
+      "tenacity": 2,
+      "specialRules": [
+        "Cannister"
+      ],
+      "points": 20
+    },
+    {
+      "id": "heavy-artillery",
+      "name": "Heavy Artillery",
+      "type": "artillery",
+      "figuresMin": 1,
+      "figuresMax": 1,
+      "weapon": "Cannon",
+      "rangeInches": 54,
+      "fire": 1,
+      "melee": 2,
+      "tenacity": 2,
+      "specialRules": [
+        "Cannister",
+        "Heavy Artillery"
+      ],
+      "points": 24
+    },
+    {
+      "id": "horse-artillery",
+      "name": "Horse Artillery",
+      "type": "artillery",
+      "figuresMin": 1,
+      "figuresMax": 1,
+      "weapon": "Cannon",
+      "rangeInches": 36,
+      "fire": 1,
+      "melee": 2,
+      "tenacity": 2,
+      "specialRules": [
+        "Cannister",
+        "Horse Artillery"
+      ],
+      "points": 20
+    }
+  ],
+  "eliteOptions": {
+    "fire": 3,
+    "melee": 2,
+    "tenacity": 4
+  }
+}

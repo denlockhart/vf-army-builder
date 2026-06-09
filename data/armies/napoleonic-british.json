@@ -1,0 +1,270 @@
+{
+  "id": "napoleonic-british",
+  "name": "British",
+  "era": "Napoleonic",
+  "period": "1807-1815",
+  "sheetVersion": "v3.1",
+  "sourceUrl": "https://www.perry-miniatures.com/valour-fortitude/vf-army-sheets/",
+  "defaultPointsLimit": 800,
+  "units": [
+    {
+      "id": "foot-guard",
+      "name": "Foot Guard",
+      "type": "infantry",
+      "figuresMin": 30,
+      "figuresMax": 48,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 3,
+      "melee": 6,
+      "tenacity": 6,
+      "specialRules": [
+        "Disciplined Musketry",
+        "Skirmishers",
+        "Square"
+      ],
+      "points": 34
+    },
+    {
+      "id": "line-infantry",
+      "name": "Line Infantry",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 3,
+      "melee": 4,
+      "tenacity": 4,
+      "specialRules": [
+        "Disciplined Musketry",
+        "Skirmishers",
+        "Square"
+      ],
+      "points": 24
+    },
+    {
+      "id": "light-infantry",
+      "name": "Light Infantry",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 4,
+      "melee": 3,
+      "tenacity": 4,
+      "specialRules": [
+        "Disciplined Musketry",
+        "Light Infantry",
+        "Square"
+      ],
+      "points": 26
+    },
+    {
+      "id": "riflemen",
+      "name": "Riflemen",
+      "type": "infantry",
+      "figuresMin": 24,
+      "figuresMax": 36,
+      "weapon": "Rifle",
+      "rangeInches": 18,
+      "fire": 4,
+      "melee": 3,
+      "tenacity": 4,
+      "specialRules": [
+        "Disciplined Musketry",
+        "Light Infantry",
+        "Square"
+      ],
+      "points": 30
+    },
+    {
+      "id": "light-infantry-det",
+      "name": "Light Infantry Detachment",
+      "type": "infantry",
+      "figuresMin": 4,
+      "figuresMax": 8,
+      "weapon": "Musket",
+      "rangeInches": 12,
+      "fire": 2,
+      "melee": 2,
+      "tenacity": 2,
+      "specialRules": [
+        "Disciplined Musketry",
+        "Light Infantry"
+      ],
+      "points": 13
+    },
+    {
+      "id": "rifle-det",
+      "name": "Rifle Detachment",
+      "type": "infantry",
+      "figuresMin": 4,
+      "figuresMax": 8,
+      "weapon": "Rifle",
+      "rangeInches": 18,
+      "fire": 2,
+      "melee": 2,
+      "tenacity": 2,
+      "specialRules": [
+        "Disciplined Musketry",
+        "Light Infantry"
+      ],
+      "points": 17
+    },
+    {
+      "id": "hussars",
+      "name": "Hussars",
+      "type": "cavalry",
+      "figuresMin": 9,
+      "figuresMax": 14,
+      "weapon": "Sabre",
+      "rangeInches": null,
+      "fire": null,
+      "melee": 4,
+      "tenacity": 3,
+      "specialRules": [
+        "Carbines",
+        "Headstrong",
+        "Light Cavalry"
+      ],
+      "points": 24
+    },
+    {
+      "id": "light-dragoons",
+      "name": "Light Dragoons",
+      "type": "cavalry",
+      "figuresMin": 9,
+      "figuresMax": 14,
+      "weapon": "Sabre",
+      "rangeInches": null,
+      "fire": null,
+      "melee": 4,
+      "tenacity": 3,
+      "specialRules": [
+        "Carbines",
+        "Headstrong",
+        "Light Cavalry"
+      ],
+      "points": 24
+    },
+    {
+      "id": "heavy-dragoons",
+      "name": "Heavy Dragoons",
+      "type": "cavalry",
+      "figuresMin": 9,
+      "figuresMax": 14,
+      "weapon": "Sabre",
+      "rangeInches": null,
+      "fire": null,
+      "melee": 6,
+      "tenacity": 4,
+      "specialRules": [
+        "Headstrong",
+        "Heavy Cavalry"
+      ],
+      "points": 29
+    },
+    {
+      "id": "household-cavalry",
+      "name": "Household Cavalry",
+      "type": "cavalry",
+      "figuresMin": 9,
+      "figuresMax": 14,
+      "weapon": "Sabre",
+      "rangeInches": null,
+      "fire": null,
+      "melee": 7,
+      "tenacity": 4,
+      "specialRules": [
+        "Headstrong",
+        "Heavy Cavalry"
+      ],
+      "points": 31
+    },
+    {
+      "id": "cavalry-det",
+      "name": "Cavalry Detachment",
+      "type": "cavalry",
+      "figuresMin": 3,
+      "figuresMax": 3,
+      "weapon": "Sabre",
+      "rangeInches": null,
+      "fire": null,
+      "melee": 2,
+      "tenacity": 1,
+      "specialRules": [
+        "Carbines",
+        "Light Cavalry"
+      ],
+      "points": 12
+    },
+    {
+      "id": "rocket-artillery",
+      "name": "Rocket Artillery",
+      "type": "artillery",
+      "figuresMin": 1,
+      "figuresMax": 1,
+      "weapon": "Rocket",
+      "rangeInches": 60,
+      "fire": 1,
+      "melee": 2,
+      "tenacity": 2,
+      "specialRules": [
+        "Rockets"
+      ],
+      "points": 22
+    },
+    {
+      "id": "field-artillery",
+      "name": "Field Artillery",
+      "type": "artillery",
+      "figuresMin": 1,
+      "figuresMax": 1,
+      "weapon": "Cannon",
+      "rangeInches": 48,
+      "fire": 1,
+      "melee": 2,
+      "tenacity": 2,
+      "specialRules": [
+        "Cannister"
+      ],
+      "points": 20
+    },
+    {
+      "id": "heavy-artillery",
+      "name": "Heavy Artillery",
+      "type": "artillery",
+      "figuresMin": 1,
+      "figuresMax": 1,
+      "weapon": "Cannon",
+      "rangeInches": 54,
+      "fire": 1,
+      "melee": 2,
+      "tenacity": 2,
+      "specialRules": [
+        "Cannister",
+        "Heavy Artillery"
+      ],
+      "points": 24
+    },
+    {
+      "id": "horse-artillery",
+      "name": "Horse Artillery",
+      "type": "artillery",
+      "figuresMin": 1,
+      "figuresMax": 1,
+      "weapon": "Cannon",
+      "rangeInches": 36,
+      "fire": 1,
+      "melee": 2,
+      "tenacity": 2,
+      "specialRules": [
+        "Cannister",
+        "Horse Artillery"
+      ],
+      "points": 20
+    }
+  ]
+}
