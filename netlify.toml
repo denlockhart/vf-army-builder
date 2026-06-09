@@ -20,4 +20,5 @@
   from = "/"
   to = "/army-builder/"
   status = 302
+  force = true
   conditions = {Host = ["vf-army-builder.denlockhart.com"]}

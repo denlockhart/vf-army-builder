@@ -46,6 +46,13 @@ header h1 {
   font-size: 1.05rem;
 }
 
+.cta-hero {
+  margin-top: 1.75rem;
+  padding: 0.85rem 1.5rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+}
+
 main {
   width: min(720px, 100%);
   margin: 0 auto;
