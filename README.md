@@ -1,7 +1,9 @@
-# Valor and Fortitude Army Builder
+# Valour & Fortitude Army Builder
 
-## Project overview
+Hosted on [Netlify](https://www.netlify.com/).
 
-Source code is on GitHub at https://github.com/denlockhart/vf-army-builder
-It is hosted on [Netlify](https://www.netlify.com/) at https://vf-army-builder.denlockhart.com/
+- Home: https://denlockhart.com/
+- Army Builder: https://denlockhart.com/army-builder/
+- Source: https://github.com/denlockhart/vf-army-builder
+
 The domain is registered with [GoDaddy](https://www.godaddy.com/).

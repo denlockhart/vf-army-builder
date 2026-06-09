@@ -10,3 +10,14 @@
   from = "/api/army/:id"
   to = "/data/armies/:id.json"
   status = 200
+
+[[redirects]]
+  from = "/army-builder"
+  to = "/army-builder/"
+  status = 301
+
+[[redirects]]
+  from = "/"
+  to = "/army-builder/"
+  status = 302
+  conditions = {Host = ["vf-army-builder.denlockhart.com"]}
