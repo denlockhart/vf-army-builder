@@ -553,90 +553,297 @@ function pdfSafeText(text) {
     .replace(/\u2022/g, "-");
 }
 
+function pdfUnitRowData(entry) {
+  const fire = entry.fire == null ? "-" : entry.fire;
+  const opts = entryOptionsLabel(entry).replace(/^\s*\(/, "").replace(/\)\s*$/, "");
+  let unit = entryLabel(entry);
+  if (opts) unit += " (" + opts + ")";
+  return {
+    unit,
+    figs: String(entry.figures),
+    weapon: fmtWeapon(entry),
+    fire: String(fire),
+    melee: String(entry.melee),
+    tenacity: String(entry.tenacity),
+    pts: String(entryPointsCost(entry)),
+    rules: (entry.specialRules || []).join(", "),
+  };
+}
+
 function buildArmyPdfDoc() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: "mm", format: "a4" });
-  const margin = 14;
+  const margin = 12;
   const pageW = doc.internal.pageSize.getWidth();
-  const maxW = pageW - margin * 2;
-  let y = 18;
+  const pageH = doc.internal.pageSize.getHeight();
+  const contentW = pageW - margin * 2;
+  let y = 14;
+
+  const colors = {
+    gold: [201, 162, 39],
+    dark: [35, 29, 23],
+    cream: [232, 220, 200],
+    border: [92, 74, 50],
+    muted: [120, 110, 90],
+    rowAlt: [248, 244, 236],
+    ruleBg: [252, 250, 246],
+  };
+
+  const tableCols = [
+    { key: "unit", label: "Unit", width: 36, align: "left" },
+    { key: "figs", label: "Figs", width: 11, align: "center" },
+    { key: "weapon", label: "Weapon", width: 26, align: "left" },
+    { key: "fire", label: "F", width: 8, align: "center" },
+    { key: "melee", label: "M", width: 8, align: "center" },
+    { key: "tenacity", label: "T", width: 8, align: "center" },
+    { key: "pts", label: "Pts", width: 11, align: "right" },
+    { key: "rules", label: "Special Rules", width: contentW - 108, align: "left" },
+  ];
 
   function newPageIf(need) {
-    const pageH = doc.internal.pageSize.getHeight();
     if (y + need > pageH - margin) {
       doc.addPage();
-      y = 18;
+      y = 14;
+      return true;
     }
+    return false;
   }
 
-  function writeLine(text, size, style) {
-    newPageIf(8);
+  function splitLines(text, width, size) {
+    doc.setFontSize(size);
+    return doc.splitTextToSize(pdfSafeText(text), width);
+  }
+
+  function writeParagraph(text, size, style, width, lineGap) {
     doc.setFont("helvetica", style || "normal");
     doc.setFontSize(size);
-    const lines = doc.splitTextToSize(pdfSafeText(text), maxW);
+    doc.setTextColor(20, 16, 12);
+    const lines = splitLines(text, width || contentW, size);
+    const gap = lineGap || size * 0.42 + 1.5;
     for (const line of lines) {
-      newPageIf(6);
+      newPageIf(gap + 2);
       doc.text(line, margin, y);
-      y += size * 0.45 + 2.5;
+      y += gap;
     }
   }
 
-  function writeSpecialRulesAppendix() {
+  function drawHRule() {
+    newPageIf(4);
+    doc.setDrawColor(...colors.border);
+    doc.setLineWidth(0.3);
+    doc.line(margin, y, margin + contentW, y);
+    y += 4;
+  }
+
+  function drawSectionTitle(title) {
+    newPageIf(10);
+    doc.setFillColor(...colors.dark);
+    doc.rect(margin, y - 4, contentW, 7, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(...colors.gold);
+    doc.text(pdfSafeText(title), margin + 2, y);
+    y += 6;
+  }
+
+  function cellPadding() { return 1.8; }
+
+  function drawTableHeader() {
+    const pad = cellPadding();
+    const rowH = 7;
+    newPageIf(rowH + 2);
+    let x = margin;
+    doc.setFillColor(...colors.dark);
+    doc.rect(margin, y, contentW, rowH, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7.5);
+    doc.setTextColor(...colors.gold);
+    for (const col of tableCols) {
+      const tx = col.align === "center"
+        ? x + col.width / 2
+        : col.align === "right"
+          ? x + col.width - pad
+          : x + pad;
+      doc.text(col.label, tx, y + 4.6, { align: col.align });
+      x += col.width;
+    }
+    y += rowH;
+  }
+
+  function drawTableRow(rowData, alt) {
+    const pad = cellPadding();
+    const size = 7.5;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(size);
+    const cellLines = tableCols.map((col) => {
+      const innerW = col.width - pad * 2;
+      return splitLines(rowData[col.key] || "", innerW, size);
+    });
+    const lineH = 3.4;
+    const rowH = Math.max(...cellLines.map((lines) => lines.length)) * lineH + pad * 2;
+    newPageIf(rowH + 1);
+    if (alt) {
+      doc.setFillColor(...colors.rowAlt);
+      doc.rect(margin, y, contentW, rowH, "F");
+    }
+    doc.setDrawColor(...colors.border);
+    doc.setLineWidth(0.15);
+    let x = margin;
+    for (let i = 0; i < tableCols.length; i++) {
+      doc.rect(x, y, tableCols[i].width, rowH);
+      x += tableCols[i].width;
+    }
+    doc.setTextColor(20, 16, 12);
+    x = margin;
+    for (let i = 0; i < tableCols.length; i++) {
+      const col = tableCols[i];
+      const lines = cellLines[i];
+      const tx = col.align === "center"
+        ? x + col.width / 2
+        : col.align === "right"
+          ? x + col.width - pad
+          : x + pad;
+      let ty = y + pad + 2.8;
+      for (const line of lines) {
+        doc.text(line, tx, ty, { align: col.align });
+        ty += lineH;
+      }
+      x += col.width;
+    }
+    y += rowH;
+  }
+
+  function drawUnitsTable(units) {
+    if (!units.length) {
+      writeParagraph("(no units assigned)", 8, "italic", contentW);
+      return;
+    }
+    drawTableHeader();
+    units.forEach((entry, idx) => drawTableRow(pdfUnitRowData(entry), idx % 2 === 1));
+    y += 2;
+  }
+
+  function formatRuleBody(text) {
+    const lines = pdfSafeText(text).split("\n");
+    const out = [];
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line) {
+        if (out.length && out[out.length - 1] !== "") out.push("");
+        continue;
+      }
+      if (line.startsWith("- ") || line.startsWith("• ")) {
+        out.push("   " + line.replace(/^[-•]\s*/, "- "));
+      } else {
+        out.push(line);
+      }
+    }
+    return out.join("\n");
+  }
+
+  function drawSpecialRulesAppendix() {
     const rules = collectUsedSpecialRules();
     const texts = state.sheet && state.sheet.specialRuleText;
     if (!rules.length || !texts) return;
-    y += 2;
-    writeLine("Special Rules", 11, "bold");
+
+    drawHRule();
+    drawSectionTitle("Special Rules");
+    y += 1;
+
     for (const name of rules) {
       const text = texts[name];
       if (!text) continue;
-      writeLine(name, 9, "bold");
-      for (const line of text.split("\n")) {
-        writeLine(line, 8);
+
+      const body = formatRuleBody(text);
+      const titleSize = 9;
+      const bodySize = 8;
+      const boxPad = 3;
+      const titleLines = splitLines(name, contentW - boxPad * 2, titleSize);
+      const bodyLines = splitLines(body, contentW - boxPad * 2, bodySize);
+      const boxH = boxPad * 2 + titleLines.length * 4.2 + 1.5 + bodyLines.length * 3.6;
+
+      newPageIf(boxH + 3);
+      doc.setFillColor(...colors.ruleBg);
+      doc.setDrawColor(...colors.border);
+      doc.setLineWidth(0.2);
+      doc.rect(margin, y, contentW, boxH, "FD");
+
+      let ty = y + boxPad + 3;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(titleSize);
+      doc.setTextColor(...colors.dark);
+      for (const line of titleLines) {
+        doc.text(line, margin + boxPad, ty);
+        ty += 4.2;
       }
-      y += 1;
+
+      ty += 1;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(bodySize);
+      doc.setTextColor(40, 34, 28);
+      for (const line of bodyLines) {
+        const isBullet = line.trimStart().startsWith("-");
+        doc.text(line, margin + boxPad + (isBullet ? 2 : 0), ty);
+        ty += 3.6;
+      }
+
+      y += boxH + 3;
     }
   }
 
+  // Header block
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.setTextColor(...colors.dark);
+  doc.text("Valour & Fortitude Army List", margin, y);
+  y += 8;
+
   const armyName = getArmyName();
-  writeLine("Valour & Fortitude Army List", 16, "bold");
-  if (armyName) writeLine(armyName, 13, "bold");
-  writeLine(
+  if (armyName) {
+    doc.setFontSize(13);
+    doc.setTextColor(...colors.gold);
+    doc.text(pdfSafeText(armyName), margin, y);
+    y += 7;
+  }
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor(...colors.muted);
+  writeParagraph(
     "Sheet: " + state.sheet.name + " " + state.sheet.period + " (" + state.sheet.sheetVersion + ")",
-    10
+    9,
+    "normal",
+    contentW
   );
-  writeLine("Army leader: " + (getArmyLeader() || "(unnamed)"), 10);
-  writeLine("Points: " + totalPoints() + " / " + $("points-limit").value, 10);
+  writeParagraph("Army leader: " + (getArmyLeader() || "(unnamed)"), 9, "normal", contentW);
+  writeParagraph("Points: " + totalPoints() + " / " + $("points-limit").value, 9, "bold", contentW);
   y += 2;
+  drawHRule();
 
   for (const b of state.brigades) {
-    writeLine(b.name + " - Leader: " + b.leader, 11, "bold");
-    const units = state.entries.filter((e) => b.unitIds.includes(e.id));
-    if (units.length === 0) {
-      writeLine("  (no units assigned)", 9);
-    } else {
-      for (const e of units) {
-        writeLine("  " + entryDetailLine(e), 9);
-      }
-    }
+    drawSectionTitle(b.name + "  |  Leader: " + b.leader);
     y += 1;
+    drawUnitsTable(state.entries.filter((e) => b.unitIds.includes(e.id)));
   }
 
   const unassigned = state.entries.filter(
-    (e) => !state.brigades.some((b) => b.unitIds.includes(e.id))
+    (e) => !state.brigades.some((br) => br.unitIds.includes(e.id))
   );
   if (unassigned.length) {
-    writeLine("Unassigned units", 11, "bold");
-    for (const e of unassigned) {
-      writeLine("  " + entryDetailLine(e), 9);
-    }
+    drawSectionTitle("Unassigned Units");
+    y += 1;
+    drawUnitsTable(unassigned);
   }
 
-  writeSpecialRulesAppendix();
+  drawSpecialRulesAppendix();
 
   y += 2;
-  writeLine("Based on Perry Miniatures V&F army sheets v3.1", 8);
-  writeLine(state.sheet.sourceUrl, 8);
+  drawHRule();
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...colors.muted);
+  writeParagraph("Based on Perry Miniatures V&F army sheets v3.1", 7.5, "normal", contentW);
+  writeParagraph(state.sheet.sourceUrl, 7.5, "normal", contentW);
 
   const filename = sanitizeFilename(armyName || "army-list") + ".pdf";
   return { doc, filename };
