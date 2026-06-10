@@ -572,6 +572,34 @@ function pdfSafeText(text) {
     .replace(/\u2022/g, "-");
 }
 
+function reflowSpecialRuleText(text) {
+  const rawLines = pdfSafeText(text).split("\n");
+  const parts = [];
+  let paragraph = "";
+
+  function flushParagraph() {
+    const value = paragraph.trim();
+    if (value) parts.push(value);
+    paragraph = "";
+  }
+
+  for (const raw of rawLines) {
+    const line = raw.trim();
+    if (!line) {
+      flushParagraph();
+      continue;
+    }
+    if (line.startsWith("- ") || line.startsWith("• ")) {
+      flushParagraph();
+      parts.push("- " + line.replace(/^[-•]\s*/, ""));
+      continue;
+    }
+    paragraph = paragraph ? paragraph + " " + line : line;
+  }
+  flushParagraph();
+  return parts.join("\n");
+}
+
 function pdfUnitMainRowData(entry) {
   const fire = entry.fire == null ? "-" : entry.fire;
   const opts = entryOptionsLabel(entry).replace(/^\s*\(/, "").replace(/\)\s*$/, "");
@@ -629,7 +657,8 @@ function buildArmyPdfDoc() {
     return false;
   }
 
-  function splitLines(text, width, size) {
+  function splitLines(text, width, size, style) {
+    doc.setFont("helvetica", style || "normal");
     doc.setFontSize(size);
     return doc.splitTextToSize(pdfSafeText(text), width);
   }
@@ -744,7 +773,7 @@ function buildArmyPdfDoc() {
     if (!rulesText) return;
     const pad = cellPadding();
     const prefix = "Special Rules: ";
-    const lines = splitLines(prefix + rulesText, tableW - pad * 2, rulesSize);
+    const lines = splitLines(prefix + rulesText, tableW - pad * 2, rulesSize, "italic");
     const lineH = rulesSize * 0.44 + 0.55;
     const rowH = lines.length * lineH + pad * 2;
     newPageIf(rowH + 1);
@@ -785,24 +814,6 @@ function buildArmyPdfDoc() {
     y += 4;
   }
 
-  function formatRuleBody(text) {
-    const lines = pdfSafeText(text).split("\n");
-    const out = [];
-    for (const raw of lines) {
-      const line = raw.trim();
-      if (!line) {
-        if (out.length && out[out.length - 1] !== "") out.push("");
-        continue;
-      }
-      if (line.startsWith("- ") || line.startsWith("• ")) {
-        out.push("   " + line.replace(/^[-•]\s*/, "- "));
-      } else {
-        out.push(line);
-      }
-    }
-    return out.join("\n");
-  }
-
   function drawSpecialRulesAppendix() {
     const rules = collectUsedSpecialRules();
     const texts = state.sheet && state.sheet.specialRuleText;
@@ -810,49 +821,77 @@ function buildArmyPdfDoc() {
 
     drawHRule();
     drawSectionTitle("Special Rules");
-    y += 1;
 
+    const ruleNameW = 42;
+    const ruleDescW = contentW - ruleNameW;
+    const pad = cellPadding();
+    const nameSize = 10;
+    const bodySize = 10;
+    const lineH = bodySize * 0.44 + 0.55;
+    const tableTop = y;
+
+    const headerH = 8.5;
+    newPageIf(headerH + 2);
+    doc.setFillColor(220, 220, 220);
+    doc.rect(margin, y, contentW, headerH, "F");
+    doc.setDrawColor(0, 0, 0);
+    doc.setLineWidth(0.25);
+    doc.rect(margin, y, contentW, headerH);
+    doc.rect(margin, y, ruleNameW, headerH);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Rule", margin + pad, y + 5.5);
+    doc.text("Description", margin + ruleNameW + pad, y + 5.5);
+    y += headerH;
+
+    let rowIdx = 0;
     for (const name of rules) {
       const text = texts[name];
       if (!text) continue;
 
-      const body = formatRuleBody(text);
-      const titleSize = 11.5;
-      const bodySize = 10.5;
-      const boxPad = 3;
-      const titleLineH = titleSize * 0.45 + 0.5;
-      const bodyLineH = bodySize * 0.45 + 0.5;
-      const titleLines = splitLines(name, contentW - boxPad * 2, titleSize);
-      const bodyLines = splitLines(body, contentW - boxPad * 2, bodySize);
-      const boxH = boxPad * 2 + titleLines.length * titleLineH + 1.5 + bodyLines.length * bodyLineH;
+      const body = reflowSpecialRuleText(text);
+      const nameLines = splitLines(name, ruleNameW - pad * 2, nameSize, "bold");
+      const bodyLines = splitLines(body, ruleDescW - pad * 2, bodySize, "normal");
+      const rowH = Math.max(nameLines.length, bodyLines.length) * lineH + pad * 2;
 
-      newPageIf(boxH + 3);
-      doc.setFillColor(...colors.ruleBg);
+      newPageIf(rowH + 1);
+      if (rowIdx % 2 === 1) {
+        doc.setFillColor(...colors.rowAlt);
+        doc.rect(margin, y, contentW, rowH, "F");
+      }
       doc.setDrawColor(...colors.border);
-      doc.setLineWidth(0.2);
-      doc.rect(margin, y, contentW, boxH, "FD");
+      doc.setLineWidth(0.15);
+      doc.rect(margin, y, contentW, rowH);
+      doc.rect(margin, y, ruleNameW, rowH);
 
-      let ty = y + boxPad + 3;
+      let ny = y + pad + nameSize * 0.35;
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(titleSize);
+      doc.setFontSize(nameSize);
       doc.setTextColor(...colors.dark);
-      for (const line of titleLines) {
-        doc.text(line, margin + boxPad, ty);
-        ty += titleLineH;
+      for (const line of nameLines) {
+        doc.text(line, margin + pad, ny);
+        ny += lineH;
       }
 
-      ty += 1;
+      let dy = y + pad + bodySize * 0.35;
       doc.setFont("helvetica", "normal");
       doc.setFontSize(bodySize);
       doc.setTextColor(40, 34, 28);
       for (const line of bodyLines) {
-        const isBullet = line.trimStart().startsWith("-");
-        doc.text(line, margin + boxPad + (isBullet ? 2 : 0), ty);
-        ty += bodyLineH;
+        const indent = line.trimStart().startsWith("-") ? 1 : 0;
+        doc.text(line, margin + ruleNameW + pad + indent, dy);
+        dy += lineH;
       }
 
-      y += boxH + 3;
+      y += rowH;
+      rowIdx++;
     }
+
+    doc.setDrawColor(...colors.border);
+    doc.setLineWidth(0.35);
+    doc.rect(margin, tableTop, contentW, y - tableTop);
+    y += 4;
   }
 
   // Header block
