@@ -313,5 +313,77 @@
     "Open Order": "This unit can be set up in a deployed formation called open\norder. It must be set up in 1 to 4 ranks with a ¼\" to ½\" gap\nbetween ranks and files. The following rules apply to a unit\nin open order:\n• Halve the losses it suffers in the fire phase.\n• Halve its fire value if it has 3 or 4 ranks.\n• It has a move distance of 9\" if it is infantry, and of 18\" if\nit is cavalry.\n• If it is light infantry its movement is not affected by\nrough terrain.\n• Subtract 1 from its melee value unless it is in cover.\n• It only adds 1 to a unit’s melee value if it lends it melee\nsupport.\n• It can move across figures from a friendly unit that is\nalso in open order even if they are not from the same\nbrigade.",
     "Square": "This unit can reform into a square formation, and from a\nsquare into any other formation, if it does not move or\nretreat as part of the same action. Set the unit up in a\nsquare or oblong shape with its figures facing outward.\nThe following rules apply to a unit in square formation:\n• It is a deployed unit that has a move distance of 3\".\n• It cannot assault.\n• Add 1 to the attack value of artillery that shoot at it.\n• Halve its fire attack value and add 1 to its melee attack\nvalue.\n• At the start of each melee phase, before fights take\nplace, roll 1 dice for each cavalry unit that is in contact\nwith 1 or more enemy squares. Add 2 to the dice roll\nfor a unit if all the squares it is in contact with are\nshaken. On a 1-3 the cavalry unit suffers 1 loss and\nmust immediately retreat; on a 4-5 the cavalry unit\nmust retreat but suffers no losses; on a 6+ it remains\nin contact with the square and fights at full effect.\n• A square that loses a melee automatically routs.",
     "Unpredictable": "The commanding player must take an unpredictability test\nfor this unit the first time it fights, fights back or suffers a\nloss. To take the test, the commanding player rolls a D6.\nOn a 1 subtract 1 from the unit’s melee value and tenacity\nfor the rest of the battle and on a 6 add 1 to the unit’s\nmelee value and tenacity for the rest of the battle. On a 2-5\nits melee value and tenacity do not change."
-  }
+  },
+  "fateCards": [
+    {
+      "rank": "Any",
+      "name": "Act on Initiative",
+      "text": "You can play any card to allow 1 unit from a brigade that failed an activation test or that did not receive a message to take an action."
+    },
+    {
+      "rank": "King",
+      "name": "Conquerors of the Conquerors",
+      "text": "Play this card when you test the status of an unpredictable unit, instead of rolling the dice. Add 1 to the unit's melee value and tenacity for the rest of the battle."
+    },
+    {
+      "rank": "Queen",
+      "name": "An Invisible Enemy",
+      "text": "Play this card when an enemy player makes a successful messenger test. The test is failed."
+    },
+    {
+      "rank": "Jack",
+      "name": "The Spanish Ulcer",
+      "text": "Play this card when an enemy unit occupies a defendable terrain feature or finishes a move within 6\" of an objective that you control. The unit suffers 1 loss."
+    },
+    {
+      "rank": "10",
+      "name": "Capture",
+      "text": "Play this card in your fate phase. Pick 1 enemy controlled objective. If you control it at the end of the game, it counts as 2 objectives when determining the winner of the game."
+    },
+    {
+      "rank": "9",
+      "name": "Surprise Attack",
+      "text": "Play this card before a unit makes an assault. That unit can carry out 1 move before it assaults."
+    },
+    {
+      "rank": "8",
+      "name": "Inspiration",
+      "text": "Play this card after a friendly unit fails a valour test or brigade fails a fortitude test. The test is passed."
+    },
+    {
+      "rank": "7",
+      "name": "Directed Fire",
+      "text": "Play this card when an enemy unit is chosen as a target in the fire phase. Add 1 to the fire value of the attacking unit. In addition, artillery units on a hill can trace a line of sight to the target across units that are not on a hill."
+    },
+    {
+      "rank": "6",
+      "name": "Deadly Attack",
+      "text": "Play this card after a friendly unit fails 1 or more hit tests. Reroll the failed hit tests."
+    },
+    {
+      "rank": "5",
+      "name": "Stubborn",
+      "text": "Play this card before a unit carries out an action. Remove 1 loss marker from that unit (even if it has only 1 loss)."
+    },
+    {
+      "rank": "4",
+      "name": "Breakthrough",
+      "text": "Play this card at the end of your melee phase. Pick 1 brigade. Units from that brigade can make 1 move (they cannot assault, retreat or double)."
+    },
+    {
+      "rank": "3",
+      "name": "Confusion",
+      "text": "Play this card at the start of an enemy turn. The enemy cannot automatically activate a brigade that turn and any enemy reinforcements due to arrive that turn arrive 1 turn later."
+    },
+    {
+      "rank": "2",
+      "name": "Tide of Battle",
+      "text": "Play this card immediately. Shuffle all your discarded fate cards (including this one) back into your fate deck."
+    },
+    {
+      "rank": "Ace",
+      "name": "All Out Attack",
+      "text": "Play this card at the start of your melee phase. Pick 1 friendly leader. Add 1 to the melee value of friendly units that are within 12\" of that leader in that phase."
+    }
+  ]
 }

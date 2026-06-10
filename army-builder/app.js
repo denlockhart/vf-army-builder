@@ -395,8 +395,31 @@ function renderSummary() {
 function renderAll() {
   renderCatalog();
   renderBrigades();
+  renderFateCards();
   renderSummary();
   updateActiveBrigadeLabel();
+}
+
+function renderFateCards() {
+  const panel = $("fate-cards-panel");
+  const list = $("fate-cards-list");
+  if (!panel || !list) return;
+  const cards = state.sheet && state.sheet.fateCards;
+  if (!cards || !cards.length) {
+    panel.classList.add("hidden");
+    list.innerHTML = "";
+    return;
+  }
+  panel.classList.remove("hidden");
+  list.innerHTML = "";
+  for (const card of cards) {
+    const row = document.createElement("div");
+    row.className = "fate-card-row";
+    row.innerHTML =
+      '<div class="fate-card-rank">' + esc(card.rank) + "</div>" +
+      "<div><strong>" + esc(card.name) + '</strong><div class="meta">' + esc(card.text) + "</div></div>";
+    list.appendChild(row);
+  }
 }
 
 
@@ -814,6 +837,91 @@ function buildArmyPdfDoc() {
     y += 4;
   }
 
+  function drawFateCardsAppendix() {
+    const cards = state.sheet && state.sheet.fateCards;
+    if (!cards || !cards.length) return;
+
+    drawHRule();
+    drawSectionTitle("Fate Cards");
+
+    const rankW = 16;
+    const nameW = 38;
+    const textW = contentW - rankW - nameW;
+    const pad = cellPadding();
+    const rankSize = 10;
+    const nameSize = 10;
+    const bodySize = 9.5;
+    const lineH = bodySize * 0.44 + 0.55;
+    const tableTop = y;
+
+    const headerH = 8.5;
+    newPageIf(headerH + 2);
+    doc.setFillColor(220, 220, 220);
+    doc.rect(margin, y, contentW, headerH, "F");
+    doc.setDrawColor(0, 0, 0);
+    doc.setLineWidth(0.25);
+    doc.rect(margin, y, contentW, headerH);
+    doc.rect(margin, y, rankW, headerH);
+    doc.rect(margin + rankW, y, nameW, headerH);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Card", margin + pad, y + 5.5);
+    doc.text("Name", margin + rankW + pad, y + 5.5);
+    doc.text("Effect", margin + rankW + nameW + pad, y + 5.5);
+    y += headerH;
+
+    cards.forEach((card, rowIdx) => {
+      const body = reflowSpecialRuleText(card.text);
+      const rankLines = splitLines(card.rank, rankW - pad * 2, rankSize, "bold");
+      const nameLines = splitLines(card.name, nameW - pad * 2, nameSize, "bold");
+      const bodyLines = splitLines(body, textW - pad * 2, bodySize, "normal");
+      const rowH = Math.max(rankLines.length, nameLines.length, bodyLines.length) * lineH + pad * 2;
+
+      newPageIf(rowH + 1);
+      if (rowIdx % 2 === 1) {
+        doc.setFillColor(...colors.rowAlt);
+        doc.rect(margin, y, contentW, rowH, "F");
+      }
+      doc.setDrawColor(...colors.border);
+      doc.setLineWidth(0.15);
+      doc.rect(margin, y, contentW, rowH);
+      doc.rect(margin, y, rankW, rowH);
+      doc.rect(margin + rankW, y, nameW, rowH);
+
+      let ry = y + pad + rankSize * 0.35;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(rankSize);
+      doc.setTextColor(...colors.dark);
+      for (const line of rankLines) {
+        doc.text(line, margin + pad, ry);
+        ry += lineH;
+      }
+
+      let ny = y + pad + nameSize * 0.35;
+      for (const line of nameLines) {
+        doc.text(line, margin + rankW + pad, ny);
+        ny += lineH;
+      }
+
+      let ty = y + pad + bodySize * 0.35;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(bodySize);
+      doc.setTextColor(40, 34, 28);
+      for (const line of bodyLines) {
+        doc.text(line, margin + rankW + nameW + pad, ty);
+        ty += lineH;
+      }
+
+      y += rowH;
+    });
+
+    doc.setDrawColor(...colors.border);
+    doc.setLineWidth(0.35);
+    doc.rect(margin, tableTop, contentW, y - tableTop);
+    y += 4;
+  }
+
   function drawSpecialRulesAppendix() {
     const rules = collectUsedSpecialRules();
     const texts = state.sheet && state.sheet.specialRuleText;
@@ -938,6 +1046,7 @@ function buildArmyPdfDoc() {
     drawUnitsTable(unassigned);
   }
 
+  drawFateCardsAppendix();
   drawSpecialRulesAppendix();
 
   y += 2;
