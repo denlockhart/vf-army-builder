@@ -290,14 +290,15 @@
       "figuresMax": 1,
       "weapon": "Cannon",
       "rangeInches": 54,
-      "fire": 1,
+      "fire": 2,
       "melee": 2,
       "tenacity": 2,
       "specialRules": [
+        "Battery",
         "Cannister",
-        "Heavy Artillery"
+        "Slow"
       ],
-      "points": 24
+      "points": 31
     },
     {
       "id": "horse-artillery",
@@ -321,5 +322,20 @@
     "fire": 3,
     "melee": 2,
     "tenacity": 4
+  },
+  "specialRuleText": {
+    "Battery": "Re-roll hit rolls of 1, before modifiers are applied, for fire\nattacks made by this unit if it is the main attacker and has\nno loss markers. In addition, up to 5 units can lend fire\nsupport to this unit as long as all the other units are artillery\nunits from this unit's brigade that are within 6\" of it.",
+    "Cannister": "A unit that has the canister special rule can either fire\nnormally or it can use the following special rules:\n• Add 2 to its fire or melee attack value if the range to\nthe target is up to 12\" and the target is at least partially\nin its front arc.\n• Count it as 2 units instead of 1 when it lends support if\nthe range to the target is up to 12\" and the target is at\nleast partially in its front arc.",
+    "Carbines": "This unit can use its carbines to skirmish (see the\nSkirmishers special rule). Carbines have a fire value of 1\nand a range of 12\" (which includes the modifiers for\nskirmishing).",
+    "Elan": "Reroll hit rolls of 1 for melee attacks made by this unit if it\nis the main attacker.",
+    "Heavy Cavalry": "Re-roll hit rolls of 1, before modifiers are applied, for melee\nattacks made by this unit if it is the main attacker and the\ntarget is not in cover.",
+    "Horse Artillery": "This unit has a move distance of 18\" when limbered. In\naddition, it can reform both before and after carrying out a\nmove or retreat, and can carry out an action even if it has\nfired in the same turn. Enemy infantry cannot use an\nassault to move into contact with horse artillery unless they\nstart within 6\" of it.",
+    "Light Cavalry": "This unit has the Open Order special rule. In addition, add\n2 to messenger tests for this unit.",
+    "Light Infantry": "The following rules apply to a Light Infantry unit:\n• It has the Open Order and Skirmishers special rules.\n• Add 2 to messenger tests for it if it is a detachment or\npart of a brigade that consists only of light infantry\nunits.\n• Its losses are halved in the fire phase if it is in\ndefendable terrain.\n• It can occupy defendable terrain after it has made a\nmove or retreat.",
+    "Militia": "This unit cannot move in the same action phase that it\nreforms. In addition, do not add half its fire value to its\nmelee value when it makes a melee attack while in line\nformation.",
+    "Open Order": "This unit can be set up in a deployed formation called open\norder. It must be set up in 1 to 4 ranks with a ¼\" to ½\" gap\nbetween ranks and files. The following rules apply to a unit\nin open order:\n• Halve the losses it suffers in the fire phase.\n• Halve its fire value if it has 3 or 4 ranks.\n• It has a move distance of 9\" if it is infantry, and of 18\" if\nit is cavalry.\n• If it is light infantry its movement is not affected by\nrough terrain.\n• Subtract 1 from its melee value unless it is in cover.\n• It only adds 1 to a unit’s melee value if it lends it melee\nsupport.\n• It can move across figures from a friendly unit that is\nalso in open order even if they are not from the same\nbrigade.",
+    "Skirmishers": "When this unit shoots, the commanding player can choose\nto use the unit’s skirmishers. If they do so, the unit’s fire\nvalue is halved and its range increased by 6\", and it can\ncarry out any action in the same turn apart from an assault.\nA unit can only use skirmishers to lend fire support if the\nattacking unit is also using skirmishers.",
+    "Square": "This unit can reform into a square formation, and from a\nsquare into any other formation, if it does not move or\nretreat as part of the same action. Set the unit up in a\nsquare or oblong shape with its figures facing outward.\nThe following rules apply to a unit in square formation:\n• It is a deployed unit that has a move distance of 3\".\n• It cannot assault.\n• Add 1 to the attack value of artillery that shoot at it.\n• Halve its fire attack value and add 1 to its melee attack\nvalue.\n• At the start of each melee phase, before fights take\nplace, roll 1 dice for each cavalry unit that is in contact\nwith 1 or more enemy squares. Add 2 to the dice roll\nfor a unit if all the squares it is in contact with are\nshaken. On a 1-3 the cavalry unit suffers 1 loss and\nmust immediately retreat; on a 4-5 the cavalry unit\nmust retreat but suffers no losses; on a 6+ it remains\nin contact with the square and fights at full effect.\n• A square that loses a melee automatically routs.",
+    "Slow": "This unit has a move distance of 6\" when limbered and 1\"\nwhen unlimbered."
   }
 }

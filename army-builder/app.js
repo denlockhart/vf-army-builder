@@ -531,6 +531,36 @@ function sanitizeFilename(name) {
   return (name || "army-list").replace(/[^a-zA-Z0-9 _-]+/g, "").trim().replace(/\s+/g, "-") || "army-list";
 }
 
+function collectUsedSpecialRules() {
+  const used = new Set();
+  for (const e of state.entries) {
+    for (const r of e.specialRules || []) used.add(r);
+  }
+  const order = state.sheet.specialRuleText ? Object.keys(state.sheet.specialRuleText) : [];
+  const sorted = order.filter((r) => used.has(r));
+  for (const r of used) {
+    if (!sorted.includes(r)) sorted.push(r);
+  }
+  return sorted;
+}
+
+function writeSpecialRulesAppendix(writeLine) {
+  const rules = collectUsedSpecialRules();
+  const texts = state.sheet && state.sheet.specialRuleText;
+  if (!rules.length || !texts) return;
+  y += 2;
+  writeLine("Special Rules", 11, "bold");
+  for (const name of rules) {
+    const text = texts[name];
+    if (!text) continue;
+    writeLine(name, 9, "bold");
+    for (const line of text.split("\n")) {
+      writeLine(line, 8);
+    }
+    y += 1;
+  }
+}
+
 function buildArmyPdfDoc() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: "mm", format: "a4" });
@@ -592,6 +622,8 @@ function buildArmyPdfDoc() {
       writeLine("  " + entryDetailLine(e), 9);
     }
   }
+
+  writeSpecialRulesAppendix(writeLine);
 
   y += 2;
   writeLine("Based on Perry Miniatures V&F army sheets v3.1", 8);
