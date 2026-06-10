@@ -716,22 +716,26 @@ function buildArmyPdfDoc() {
   function drawRulesSubRow(rulesText, alt) {
     if (!rulesText) return;
     const pad = cellPadding();
+    const rulesX = 0;
+    const rulesW = pageW;
+    const rulesPad = 10;
     const prefix = "Special Rules: ";
-    const lines = splitLines(prefix + rulesText, tableW - pad * 2, rulesSize);
+    const lines = splitLines(prefix + rulesText, rulesW - rulesPad * 2, rulesSize);
     const lineH = rulesSize * 0.44 + 0.55;
     const rowH = lines.length * lineH + pad * 2;
     newPageIf(rowH + 1);
     doc.setFillColor(...(alt ? colors.rowAlt : [255, 255, 255]));
-    doc.rect(tableX, y, tableW, rowH, "F");
+    doc.rect(rulesX, y, rulesW, rowH, "F");
     doc.setDrawColor(...colors.border);
     doc.setLineWidth(0.15);
-    doc.rect(tableX, y, tableW, rowH);
+    doc.line(rulesX, y, rulesX + rulesW, y);
+    doc.line(rulesX, y + rowH, rulesX + rulesW, y + rowH);
     doc.setFont("helvetica", "italic");
     doc.setFontSize(rulesSize);
     doc.setTextColor(...colors.muted);
     let ty = y + pad + rulesSize * 0.35;
     for (const line of lines) {
-      doc.text(line, tableX + pad, ty);
+      doc.text(line, rulesX + rulesPad, ty);
       ty += lineH;
     }
     y += rowH;
@@ -743,18 +747,18 @@ function buildArmyPdfDoc() {
       y += 2;
       return;
     }
-    const tableTop = y;
     drawTableHeader();
     units.forEach((entry, idx) => {
       const rowData = pdfUnitMainRowData(entry);
       const rules = rowData.rules;
       const alt = idx % 2 === 1;
+      const rowTop = y;
       drawTableRow(rowData, alt, tableSize);
-      drawRulesSubRow(rules, alt);
+      doc.setDrawColor(...colors.border);
+      doc.setLineWidth(0.35);
+      doc.rect(tableX, rowTop, tableW, y - rowTop);
+      if (rules) drawRulesSubRow(rules, alt);
     });
-    doc.setDrawColor(...colors.border);
-    doc.setLineWidth(0.35);
-    doc.rect(tableX, tableTop, tableW, y - tableTop);
     y += 4;
   }
 
@@ -781,9 +785,26 @@ function buildArmyPdfDoc() {
     const texts = state.sheet && state.sheet.specialRuleText;
     if (!rules.length || !texts) return;
 
-    drawHRule();
-    drawSectionTitle("Special Rules");
-    y += 1;
+    const rulesX = 0;
+    const rulesW = pageW;
+    const rulesPad = 10;
+    const rulesTextW = rulesW - rulesPad * 2;
+
+    newPageIf(4);
+    doc.setDrawColor(...colors.border);
+    doc.setLineWidth(0.3);
+    doc.line(rulesX, y, rulesX + rulesW, y);
+    y += 4;
+
+    newPageIf(14);
+    const barH = 8;
+    doc.setFillColor(...colors.dark);
+    doc.rect(rulesX, y, rulesW, barH, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(...colors.gold);
+    doc.text(pdfSafeText("Special Rules"), rulesPad, y + 5.5);
+    y += barH + 4;
 
     for (const name of rules) {
       const text = texts[name];
@@ -795,22 +816,22 @@ function buildArmyPdfDoc() {
       const boxPad = 3;
       const titleLineH = titleSize * 0.45 + 0.5;
       const bodyLineH = bodySize * 0.45 + 0.5;
-      const titleLines = splitLines(name, contentW - boxPad * 2, titleSize);
-      const bodyLines = splitLines(body, contentW - boxPad * 2, bodySize);
+      const titleLines = splitLines(name, rulesTextW - boxPad * 2, titleSize);
+      const bodyLines = splitLines(body, rulesTextW - boxPad * 2, bodySize);
       const boxH = boxPad * 2 + titleLines.length * titleLineH + 1.5 + bodyLines.length * bodyLineH;
 
       newPageIf(boxH + 3);
       doc.setFillColor(...colors.ruleBg);
       doc.setDrawColor(...colors.border);
       doc.setLineWidth(0.2);
-      doc.rect(margin, y, contentW, boxH, "FD");
+      doc.rect(rulesX, y, rulesW, boxH, "FD");
 
       let ty = y + boxPad + 3;
       doc.setFont("helvetica", "bold");
       doc.setFontSize(titleSize);
       doc.setTextColor(...colors.dark);
       for (const line of titleLines) {
-        doc.text(line, margin + boxPad, ty);
+        doc.text(line, rulesPad + boxPad, ty);
         ty += titleLineH;
       }
 
@@ -820,7 +841,7 @@ function buildArmyPdfDoc() {
       doc.setTextColor(40, 34, 28);
       for (const line of bodyLines) {
         const isBullet = line.trimStart().startsWith("-");
-        doc.text(line, margin + boxPad + (isBullet ? 2 : 0), ty);
+        doc.text(line, rulesPad + boxPad + (isBullet ? 2 : 0), ty);
         ty += bodyLineH;
       }
 
