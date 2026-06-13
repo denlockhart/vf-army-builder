@@ -1,0 +1,34 @@
+---
+description: Conventions for army-builder game reference JSON
+globs: projects/army-builder/data/**/*
+alwaysApply: false
+---
+
+# Army builder — game data (`projects/army-builder/data/`)
+
+Static reference data shipped with the site. **Not** user saves — those belong in localStorage.
+
+## Files
+
+- `catalog.json` — eras, army ids, and `file` pointers to army JSON
+- `armies/<id>.json` — unit profiles for one army sheet
+
+## Adding a new army sheet
+
+1. Create `armies/<id>.json` matching existing schema (`id`, `name`, `era`, `units[]`, etc.)
+2. Register it in `catalog.json` under the correct era
+3. Army `id` should match the filename (without `.json`)
+
+## Unit profile fields (typical)
+
+`id`, `name`, `type` (infantry|cavalry|artillery), `figuresMin`, `figuresMax`, `weapon`, `rangeInches`, `fire`, `melee`, `tenacity`, `specialRules`, `points`
+
+## Data integrity
+
+- Stats and points must match official Perry Valour & Fortitude army sheets
+- Keep `sheetVersion` and `sourceUrl` accurate on army JSON files
+- `netlify.toml` serves data at `/api/catalog` and `/api/army/:id`
+
+## Edit below — data rules
+
+<!-- Examples: id naming, understrength rules, new eras -->

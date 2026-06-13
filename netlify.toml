@@ -1,31 +1,39 @@
 [build]
   publish = "."
 
+# Serve projects at short public URLs (keeps existing /army-builder/ links working)
 [[redirects]]
-  from = "/api/catalog"
-  to = "/data/catalog.json"
+  from = "/army-builder/*"
+  to = "/projects/army-builder/:splat"
   status = 200
-
-[[redirects]]
-  from = "/api/army/:id"
-  to = "/data/armies/:id.json"
-  status = 200
-
-[[headers]]
-  for = "/army-builder/*"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-
-[[headers]]
-  for = "/data/*"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[redirects]]
   from = "/army-builder"
   to = "/army-builder/"
   status = 301
 
+# Army builder API — static JSON served as fetch endpoints
+[[redirects]]
+  from = "/api/catalog"
+  to = "/projects/army-builder/data/catalog.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/army/:id"
+  to = "/projects/army-builder/data/armies/:id.json"
+  status = 200
+
+[[headers]]
+  for = "/projects/army-builder/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/projects/army-builder/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Legacy subdomain still lands on the army builder
 [[redirects]]
   from = "/"
   to = "/army-builder/"

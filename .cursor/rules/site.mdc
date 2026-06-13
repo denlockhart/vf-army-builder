@@ -1,0 +1,31 @@
+---
+description: Core context for the denlockhart.com multi-project site
+alwaysApply: true
+---
+
+# denlockhart.com
+
+Static site hosting Dennis Lockhart's side projects. Not a single-app repo.
+
+## Structure
+
+- **Site shell:** `index.html`, `site.css` at repo root
+- **Projects:** `projects/<slug>/` — each app is self-contained
+- **Hosting:** `netlify.toml` — rewrites short URLs (e.g. `/army-builder/`) to project folders
+
+## Current projects
+
+| Slug | Folder | URL |
+|------|--------|-----|
+| army-builder | `projects/army-builder/` | `/army-builder/` |
+
+## Defaults for agents
+
+- Scope changes to the relevant project folder unless editing the home page or Netlify config
+- User-specific saved data goes in browser localStorage, not the repo
+- See `AGENTS.md` for full instructions; see `projects/<slug>/README.md` for project details
+- Create commits when completing work; push only when asked
+
+## Edit below — site-wide preferences
+
+<!-- Examples: deploy branch, local server, how to add new projects -->

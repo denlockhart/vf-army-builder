@@ -1,0 +1,31 @@
+---
+description: Conventions for the VF Army Builder project
+globs: projects/army-builder/**/*
+alwaysApply: false
+---
+
+# Army builder (`projects/army-builder/`)
+
+Valour & Fortitude napoleonic army list builder. Vanilla HTML/CSS/JS.
+
+## Architecture
+
+- Single `state` object in `app.js` holds catalog, sheet, entries, brigades, UI state
+- DOM helpers: `$()`, `showError()`, screen toggles between setup and builder
+- PDF export uses vendored `jspdf.umd.min.js` — avoid editing it
+- `fate-cards.js` is a separate module for fate card logic
+- Game reference data in `data/`; user army lists in localStorage (not the repo)
+
+## Style
+
+- Plain functions, no classes or modules (except fate-cards)
+- Use existing patterns: `fmtWeapon()`, `fmtStats()`, `figureBounds()`, etc.
+- CSS in `style.css` — keep class names consistent with `index.html`
+
+## API paths
+
+App fetches `/api/catalog` and `/api/army/:id` — mapped to `data/` via `netlify.toml`.
+
+## Edit below — app-specific rules
+
+<!-- Examples: PDF layout, brigade behavior, localStorage keys -->
